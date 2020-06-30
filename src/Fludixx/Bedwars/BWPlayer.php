@@ -27,7 +27,8 @@ use pocketmine\Player;
  * @package Fludixx\Bedwars
  * In the BWPlayer class info about an Player will be saved, for example teams
  */
-class BWPlayer {
+class BWPlayer
+{
 
 	/** @var Player */
 	protected $player;
@@ -62,14 +63,15 @@ class BWPlayer {
     /**
      * @return bool
      */
-	public function canBuild() : bool {
-	    return $this->canBuild;
-    }
+	public function canBuild() : bool
+	{
+		return $this->canBuild;
+	}
 
     /**
      * @param bool $canBuild
      */
-    public function setCanBuild(bool $canBuild): void
+    public function setCanBuild(bool $canBuild) : void
     {
         $this->canBuild = $canBuild;
     }
@@ -151,7 +153,8 @@ class BWPlayer {
 	/**
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName() : string
+	{
 		// TODO Implement Nicks
 		return $this->player->getName();
 	}
@@ -159,7 +162,8 @@ class BWPlayer {
 	/**
 	 * @param Position $position
 	 */
-	public function saveTeleport(Position $position) {
+	public function saveTeleport(Position $position)
+	{
 		$this->player->teleport(Bedwars::getInstance()->getServer()->getLevelByName("transfare")->getSafeSpawn());
 		$pk = new ChangeDimensionPacket();
 		$pk->position = Bedwars::getInstance()->getServer()->getLevelByName("transfare")->getSafeSpawn();
@@ -169,14 +173,16 @@ class BWPlayer {
 		Bedwars::getInstance()->getScheduler()->scheduleDelayedTask(new removeLoadingScreen($this->player, $position), 20);
 	}
 
-	public function sendMsg(string $msg) {
+	public function sendMsg(string $msg)
+	{
 		$this->player->sendMessage(Bedwars::PREFIX."$msg");
 	}
 
 	/**
 	 * @param Scoreboard $sb
 	 */
-	public function sendScoreboard(Scoreboard $sb) {
+	public function sendScoreboard(Scoreboard $sb)
+	{
 		$pk = new RemoveObjectivePacket();
 		$pk->objectiveName = $sb->objName;
 		$this->player->sendDataPacket($pk);
@@ -203,7 +209,8 @@ class BWPlayer {
 		}
 	}
 
-	public function die() {
+	public function die()
+	{
 		$levelname = $this->player->getLevel()->getFolderName();
 		if(Bedwars::$arenas[$levelname]->getBeds()[$this->pos]) {
 			$this->player->setHealth(20.0);
@@ -226,23 +233,26 @@ class BWPlayer {
     /**
      * @param string $objname
      */
-	public function rmScoreboard(string $objname) {
+	public function rmScoreboard(string $objname)
+	{
 		$pk = new RemoveObjectivePacket();
 		$pk->objectiveName = $objname;
 		$this->player->sendDataPacket($pk);
 	}
 
-    /**
-     * @return bool
-     */
-	public function isForGold() : bool {
-	    return $this->fuerGold;
-    }
+	/**
+	 * @return bool
+	 */
+	public function isForGold() : bool
+	{
+		return $this->fuerGold;
+	}
 
     /**
      * @param bool $state
      */
-    public function setForGold(bool $state = TRUE) {
+    public function setForGold(bool $state = TRUE)
+    {
 	    $this->fuerGold = $state;
     }
 
@@ -250,7 +260,8 @@ class BWPlayer {
      * @param $key
      * @param $value
      */
-    public function setVaule($key, $value) {
+    public function setVaule($key, $value)
+    {
 	    if(!isset($this->extraData[$key]))
 	        $this->extraData[$key] = 0;
 	    $this->extraData[$key] = $value;
@@ -260,11 +271,13 @@ class BWPlayer {
      * @param $key
      * @return mixed
      */
-    public function getVaule($key) {
+    public function getVaule($key)
+    {
 	    return isset($this->extraData[$key]) ? $this->extraData[$key] : 0;
     }
 
-    public function getRandomTeam(Arena $arena): int {
+    public function getRandomTeam(Arena $arena) : int
+    {
         $randomteam = mt_rand(1, $arena->getTeams());
         $tc = 0;
         foreach ($arena->getPlayers() as $p) {
