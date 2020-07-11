@@ -16,7 +16,8 @@ use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 
-class LoadStatsTask extends AsyncTask {
+class LoadStatsTask extends AsyncTask
+{
 
     const MYSQL = 1;
     const JSON  = 2;
@@ -55,9 +56,14 @@ class LoadStatsTask extends AsyncTask {
         $allStats = [];
         switch ($this->type) {
             case self::MYSQL:
-                $conn = mysqli_connect(Bedwars::$mysqlLogin['host'], Bedwars::$mysqlLogin['user'], Bedwars::$mysqlLogin['pass'], Bedwars::$mysqlLogin['db']);
+                $conn = mysqli_connect(
+                    Bedwars::$mysqlLogin['host'],
+                    Bedwars::$mysqlLogin['user'],
+                    Bedwars::$mysqlLogin['pass'],
+                    Bedwars::$mysqlLogin['db']
+                );
                 $result = $conn->query("SELECT * FROM 'players'");
-                while($row = mysqli_fetch_assoc($result)){
+                while ($row = mysqli_fetch_assoc($result)) {
                     $allStats[$row['id']] = $row;
                 }
                 break;
