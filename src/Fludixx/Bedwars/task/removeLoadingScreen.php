@@ -24,39 +24,40 @@ use pocketmine\scheduler\Task;
  * This class is required to remove the "Building Terrain..." screen
  * @see BWPlayer::saveTeleport()
  */
-class removeLoadingScreen extends Task {
+class removeLoadingScreen extends Task
+{
 
-	/** @var Player  */
-	protected $player;
-	/** @var Position  */
-	protected $pos;
+    /** @var Player  */
+    protected $player;
+    /** @var Position  */
+    protected $pos;
 
-	/**
-	 * removeLoadingScreen constructor.
-	 * @param Player   $player
-	 * @param Position|false $pos
-	 */
-	public function __construct(Player $player, $pos = false)
-	{
-		$this->player = $player;
-		$this->pos = $pos;
-	}
+    /**
+     * removeLoadingScreen constructor.
+     * @param Player   $player
+     * @param Position|false $pos
+     */
+    public function __construct(Player $player, $pos = false)
+    {
+        $this->player = $player;
+        $this->pos = $pos;
+    }
 
-	public function onRun(int $currentTick)
-	{
-		$pk = new PlayStatusPacket();
-		$pk->status = 3;
-		$this->player->sendDataPacket($pk);
-		if($this->pos instanceof Position) {
-			$spawn = $this->pos;
-			$this->player->teleport($spawn);
-			$pk = new ChangeDimensionPacket();
-			$pk->position = $this->pos;
-			$pk->dimension = DimensionIds::OVERWORLD;
-			$pk->respawn = true;
-			$this->player->sendDataPacket($pk);
-			Bedwars::getInstance()->getScheduler()->scheduleDelayedTask(new removeLoadingScreen($this->player), 40);
-		}
-	}
+    public function onRun(int $currentTick)
+    {
+        $pk = new PlayStatusPacket();
+        $pk->status = 3;
+        $this->player->sendDataPacket($pk);
+        if ($this->pos instanceof Position) {
+            $spawn = $this->pos;
+            $this->player->teleport($spawn);
+            $pk = new ChangeDimensionPacket();
+            $pk->position = $this->pos;
+            $pk->dimension = DimensionIds::OVERWORLD;
+            $pk->respawn = true;
+            $this->player->sendDataPacket($pk);
+            Bedwars::getInstance()->getScheduler()->scheduleDelayedTask(new removeLoadingScreen($this->player), 40);
+        }
+    }
 
 }
