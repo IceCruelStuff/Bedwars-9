@@ -16,55 +16,56 @@ namespace Fludixx\Bedwars\utils;
  * This class contains information about an scoreboard, BWPlayer::sendScoreboard will convert it into an Scoreboard
  * @see BWPlayer::sendScoreboard()
  */
-class Scoreboard {
+class Scoreboard
+{
 
-	/** @var string */
-	public $objName;
-	/** @var string */
-	public $title;
-	/** @var string[] */
-	public $lines = [];
+    /** @var string */
+    public $objName;
+    /** @var string */
+    public $title;
+    /** @var string[] */
+    public $lines = [];
 
-	/**
-	 * Scoreboard constructor.
-	 * @param string $objName
-	 */
-	public function __construct(string $objName)
-	{
-		$this->objName = $objName;
-	}
+    /**
+     * Scoreboard constructor.
+     * @param string $objName
+     */
+    public function __construct(string $objName)
+    {
+        $this->objName = $objName;
+    }
 
-	/**
-	 * @param string $title
-	 */
-	public function setTitle(string $title) : void
-	{
-		$this->title = $title;
-	}
+    /**
+     * @param string $title
+     */
+    public function setTitle(string $title) : void
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle() : string
-	{
-		return $this->title;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle() : string
+    {
+        return $this->title;
+    }
 
-	/**
-	 * @param int    $n
-	 * @param string $line
-	 */
-	public function setLine(int $n, string $line) : void
-	{
-		$this->lines[$n] = $line;
-	}
+    /**
+     * @param int    $n
+     * @param string $line
+     */
+    public function setLine(int $n, string $line) : void
+    {
+        $this->lines[$n] = $line;
+    }
 
-	/**
-	 * @param string $line
-	 */
-	public function addLine(string $line) : void
-	{
-		$this->lines[] = $line;
-	}
+    /**
+     * @param string $line
+     */
+    public function addLine(string $line) : void
+    {
+        $this->lines[] = $line;
+    }
 
 }
