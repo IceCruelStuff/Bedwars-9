@@ -15,7 +15,8 @@ use Fludixx\Bedwars\Bedwars;
 use pocketmine\scheduler\Task;
 use pocketmine\tile\Sign;
 
-class SignTask extends Task {
+class SignTask extends Task
+{
 
     /**
      * @param int $currentTick
@@ -25,7 +26,7 @@ class SignTask extends Task {
     {
         $level = Bedwars::getInstance()->getServer()->getDefaultLevel();
         foreach ($level->getTiles() as $tile) {
-            if($tile instanceof Sign and $tile->getLine(0) === Bedwars::NAME) {
+            if ($tile instanceof Sign && $tile->getLine(0) === Bedwars::NAME) {
                 $levelname = $tile->getLine(1);
                 try {
                     $arena = Bedwars::$arenas[$levelname];
@@ -35,7 +36,7 @@ class SignTask extends Task {
                     } else {
                         $state = Bedwars::FULL;
                     }
-                    if($arena->getState() === Arena::STATE_INUSE) {
+                    if ($arena->getState() === Arena::STATE_INUSE) {
                         $state = Bedwars::RUNNING;
                     }
                     $tile->setLine(3, $state);
