@@ -130,18 +130,26 @@ class BWTask extends Task
                                 new Vector3(0, 0, 0)
                             );
                         } else if (strtolower($tile->getLine(0))[0] === 'i' && time()%30 === 0) {
-                            $arena->getLevel()->dropItem($pos->add(0.5, 2, 0.5), Item::get(Item::IRON_INGOT), new Vector3(0, 0, 0));
-                        } else if(strtolower($tile->getLine(0))[0] === 'g' and $arena->getTimer()%60 === 0) {
-                            $arena->getLevel()->dropItem($pos->add(0.5, 2, 0.5), Item::get(Item::GOLD_INGOT), new Vector3(0, 0, 0));
+                            $arena->getLevel()->dropItem(
+                                $pos->add(0.5, 2, 0.5),
+                                Item::get(Item::IRON_INGOT),
+                                new Vector3(0, 0, 0)
+                            );
+                        } else if (strtolower($tile->getLine(0))[0] === 'g' && $arena->getTimer()%60 === 0) {
+                            $arena->getLevel()->dropItem(
+                                $pos->add(0.5, 2, 0.5),
+                                Item::get(Item::GOLD_INGOT),
+                                new Vector3(0, 0, 0)
+                            );
                         }
                     }
                 }
-
             } else {
                 $sb = new Scoreboard($name);
-                $sb->setTitle("§e§l$name");
-                $sb->setLine(1, "Timer: §b".$arena->getCountdown());
-                $sb->setLine(1, "Players: §a".(count($arena->getPlayers()))."§f / §c".($arena->getPlayersProTeam()+1));
+                $sb->setTitle(TextFormat::YELLOW . TextFormat::BOLD . $name);
+                $sb->setLine(1, "Timer: " . TextFormat::AQUA . $arena->getCountdown());
+                $sb->setLine(1, "Players: " . TextFormat::GREEN . (count($arena->getPlayers())) . TextFormat::WHITE . " / " . TextFormat::RED . ($arena->getPlayersProTeam() + 1));
+
                 foreach ($arena->getPlayers() as $player) {
                     $mplayer = Bedwars::$players[$player->getName()];
                     $mplayer->sendScoreboard($sb);
