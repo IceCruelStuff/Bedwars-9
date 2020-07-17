@@ -17,13 +17,14 @@ use pocketmine\event\player\PlayerChatEvent;
 
 class ChatListener implements Listener {
 
-    public function onChat(PlayerChatEvent $event) {
+    public function onChat(PlayerChatEvent $event)
+    {
         $player = Bedwars::$players[$event->getPlayer()->getName()];
-        if($player->getPos() !== 0) {
+        if ($player->getPos() !== 0) {
             $arena = Bedwars::$arenas[$event->getPlayer()->getLevel()->getFolderName()];
             $messageArray = explode(" ", $event->getMessage());
-            if(in_array("@all", $messageArray) or $adda = in_array("@a", $messageArray)) {
-                if($adda) {
+            if (in_array("@all", $messageArray) or $adda = in_array("@a", $messageArray)) {
+                if ($adda) {
                     $index = array_search("@a", $messageArray);
                 } else {
                     $index = array_search("@all", $messageArray);
