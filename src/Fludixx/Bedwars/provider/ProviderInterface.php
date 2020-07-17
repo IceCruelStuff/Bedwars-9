@@ -14,21 +14,21 @@ use pocketmine\Player;
 
 interface ProviderInterface {
 
-	/**
-	 * @param string $name
-	 * @param array  $data
-	 */
-	public function addArena(string $name, array $data) : void;
+    /**
+     * @param string $name
+     * @param array  $data
+     */
+    public function addArena(string $name, array $data) : void;
 
-	/**
-	 * @param string $name
-	 * @return array
-	 */
-	public function getArena(string $name) : array;
+    /**
+     * @param string $name
+     * @return array
+     */
+    public function getArena(string $name) : array;
 
-	/**
-	 * @return array
-	 */
-	public function getArenas() : array;
+    /**
+     * @return array
+     */
+    public function getArenas() : array;
 
 }
