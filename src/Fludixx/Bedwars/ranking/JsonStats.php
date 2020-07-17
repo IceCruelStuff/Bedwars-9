@@ -58,7 +58,7 @@ class JsonStats implements StatsInterface
      * @param Player $player
      * @return bool
      */
-    public function isRegistered(Player $player): bool
+    public function isRegistered(Player $player) : bool
     {
         return $this->config->exists($player->getName());
     }
@@ -67,7 +67,7 @@ class JsonStats implements StatsInterface
      * @param Player $player
      * @return array
      */
-    public function getAll(Player $player): array
+    public function getAll(Player $player) : array
     {
         return $this->config->get($player->getName());
     }
