@@ -27,58 +27,66 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 use pocketmine\tile\Tile;
 
-class DoubleChestInventory extends BaseFakeInventory{
+class DoubleChestInventory extends BaseFakeInventory {
 
-	public function getSendDelay(Player $player) : int{
-		/**
-		 * For those who are confused as to why this even exists...
-		 *   The client takes time to render the two chests "pairing" into a double chest.
-		 *   If the inventory is directly sent without a delay, the client either gets sent
-		 *   a single chest inventory or the client closes the inventory as soon as it renders
-		 *   the pair.
-		 */
-		return $player->getPing() < 300 ? 5 : 0;
-	}
+    public function getSendDelay(Player $player) : int
+    {
+        /**
+         * For those who are confused as to why this even exists...
+         *   The client takes time to render the two chests "pairing" into a double chest.
+         *   If the inventory is directly sent without a delay, the client either gets sent
+         *   a single chest inventory or the client closes the inventory as soon as it renders
+         *   the pair.
+         */
+        return $player->getPing() < 300 ? 5 : 0;
+    }
 
-	protected function sendFakeBlockData(Player $player, HolderData $data) : void{
-		$block = Block::get(Block::CHEST)->setComponents($data->position->x, $data->position->y, $data->position->z);
-		$block2 = Block::get(Block::CHEST)->setComponents($data->position->x + 1, $data->position->y, $data->position->z);
+    protected function sendFakeBlockData(Player $player, HolderData $data) : void
+    {
+        $block = Block::get(Block::CHEST)->setComponents($data->position->x, $data->position->y, $data->position->z);
+        $block2 = Block::get(Block::CHEST)->setComponents($data->position->x + 1, $data->position->y, $data->position->z);
 
-		$player->getLevel()->sendBlocks([$player], [$block, $block2]);
+        $player->getLevel()->sendBlocks([$player], [$block, $block2]);
 
-		$tag = new CompoundTag();
-		if($data->custom_name !== null){
-			$tag->setString("CustomName", $data->custom_name);
-		}
+        $tag = new CompoundTag();
+        if ($data->custom_name !== null) {
+            $tag->setString("CustomName", $data->custom_name);
+        }
 
-		$tag->setInt("pairz", $block->z);
+        $tag->setInt("pairz", $block->z);
 
-		$tag->setInt("pairx", $block->x + 1);
-		$this->sendTile($player, $block, $tag);
+        $tag->setInt("pairx", $block->x + 1);
+        $this->sendTile($player, $block, $tag);
 
-		$tag->setInt("pairx", $block->x);
-		$this->sendTile($player, $block2, $tag);
+        $tag->setInt("pairx", $block->x);
+        $this->sendTile($player, $block2, $tag);
 
-		$this->onFakeBlockDataSend($player);
-	}
+        $this->onFakeBlockDataSend($player);
+    }
 
-	protected function sendRealBlockData(Player $player, HolderData $data) : void{
-		$player->getLevel()->sendBlocks([$player], [$data->position, $data->position->add(1, 0, 0)]);
-	}
+    protected function sendRealBlockData(Player $player, HolderData $data) : void
+    {
+        $player->getLevel()->sendBlocks([$player], [$data->position, $data->position->add(1, 0, 0)]);
+    }
 
-	public function getNetworkType() : int{
-		return WindowTypes::CONTAINER;
-	}
+    public function getNetworkType() : int
+    {
+        return WindowTypes::CONTAINER;
+    }
 
-	public function getTileId() : string{
-		return Tile::CHEST;
-	}
+    public function getTileId() : string
+    {
+        return Tile::CHEST;
+    }
 
-	public function getName() : string{
-		return "Chest";
-	}
+    public function getName() : string
+    {
+        return "Chest";
+    }
 
-	public function getDefaultSize() : int{
-		return 54;
-	}
+    public function getDefaultSize() : int
+    {
+        return 54;
+    }
+
 }
