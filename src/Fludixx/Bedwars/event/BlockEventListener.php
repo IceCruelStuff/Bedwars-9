@@ -43,18 +43,28 @@ class BlockEventListener implements Listener
             Bedwars::$provider->addArena($levelname, $arenadata);
             if($spawnid >= (int)$arenadata['teams']) {
                 $player->sendMsg("You reached the limit of Teams for this Arena!");
-                Bedwars::$arenas[$arenadata['mapname']] =
-                    new Arena($arenadata['mapname'], (int)$arenadata['ppt'], (int)$arenadata['teams'], $player->getPlayer()->getLevel(), $arenadata['spawns']);
+                Bedwars::$arenas[$arenadata['mapname']] = new Arena(
+                    $arenadata['mapname'],
+                    (int) $arenadata['ppt'],
+                    (int) $arenadata['teams'],
+                    $player->getPlayer()->getLevel(),
+                    $arenadata['spawns']
+                );
                 Bedwars::getInstance()->getServer()->dispatchCommand($player->getPlayer(), "leave");
             }
-            $player->sendMsg("You placed the Spawn of " . Utils::teamIntToColorInt($spawnid) . ". (Next Team: " . Utils::ColorInt2Color(Utils::teamIntToColorInt
-                ($spawnid + 1)) . ")");
+            $player->sendMsg(
+                "You placed the Spawn of " .
+                Utils::teamIntToColorInt($spawnid) .
+                ". (Next Team: " .
+                Utils::ColorInt2Color(Utils::teamIntToColorInt($spawnid + 1)) . ")"
+            );
             $player->setPos($pos - 1);
         } else if ($pos === 0) {
             $event->setCancelled(!$player->canBuild());
         } else {
-            if (!in_array($event->getBlock()->getId(), Bedwars::BLOCKS))
+            if (!in_array($event->getBlock()->getId(), Bedwars::BLOCKS)) {
                 $event->setCancelled(TRUE);
+            }
             $pos = $event->getBlock()->asVector3();
             $pos->y -= 2;
             $tile = $event->getBlock()->getLevel()->getTile($pos);
@@ -78,10 +88,15 @@ class BlockEventListener implements Listener
                 $sign = $event->getBlock()->getLevel()->getTile($event->getBlock()->asVector3());
                 if ($sign instanceof Sign) {
                     $event->setCancelled(TRUE);
-                    $sign->setText(Bedwars::NAME,
+                    $sign->setText(
+                        Bedwars::NAME,
                         $player->getKnocker(),
-                        "§a? §7/ §c" . (Bedwars::$arenas[$player->getKnocker()]->getPlayersProTeam() *
-                            Bedwars::$arenas[$player->getKnocker()]->getTeams()), "???");
+                        "§a? §7/ §c" . (
+                            Bedwars::$arenas[$player->getKnocker()]->getPlayersProTeam() *
+                            Bedwars::$arenas[$player->getKnocker()]->getTeams()
+                        ),
+                        "???"
+                    );
                     $player->setPos(0);
                 }
             }
@@ -106,8 +121,9 @@ class BlockEventListener implements Listener
                     $tile->getLevel()->addParticle(new EntityFlameParticle($tile->asVector3()));
                     $tile->getLevel()->addParticle(new DustParticle($tile->asVector3(), 255, 255, 255));
                 }
-            } else if (!in_array($event->getBlock()->getId(), Bedwars::BLOCKS))
+            } else if (!in_array($event->getBlock()->getId(), Bedwars::BLOCKS)) {
                 $event->setCancelled(TRUE);
+            }
         }
     }
 
