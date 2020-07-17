@@ -17,16 +17,16 @@ use pocketmine\Player;
 
 class StartCommand extends Command {
 
-	public function __construct()
-	{
-		parent::__construct("start", "Set the counter to 10", "/start", []);
-	}
+    public function __construct()
+    {
+        parent::__construct("start", "Set the counter to 10", "/start", []);
+    }
 
-	public function execute(CommandSender $sender, string $commandLabel, array $args)
-	{
-		if($sender->hasPermission("bw.start") and $sender instanceof Player) {
-			Bedwars::$arenas[$sender->getLevel()->getFolderName()]->setCountdown(10);
-		}
-	}
+    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    {
+        if ($sender->hasPermission("bw.start") && $sender instanceof Player) {
+            Bedwars::$arenas[$sender->getLevel()->getFolderName()]->setCountdown(10);
+        }
+    }
 
 }
