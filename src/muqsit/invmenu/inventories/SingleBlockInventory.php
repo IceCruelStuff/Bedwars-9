@@ -27,25 +27,28 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 use pocketmine\tile\Tile;
 
-abstract class SingleBlockInventory extends BaseFakeInventory{
+abstract class SingleBlockInventory extends BaseFakeInventory {
 
-	protected function sendFakeBlockData(Player $player, HolderData $data) : void{
-		$block = $this->getBlock()->setComponents($data->position->x, $data->position->y, $data->position->z);
-		$player->getLevel()->sendBlocks([$player], [$block]);
+    protected function sendFakeBlockData(Player $player, HolderData $data) : void
+    {
+        $block = $this->getBlock()->setComponents($data->position->x, $data->position->y, $data->position->z);
+        $player->getLevel()->sendBlocks([$player], [$block]);
 
-		$tag = new CompoundTag();
-		if($data->custom_name !== null){
-			$tag->setString("CustomName", $data->custom_name);
-		}
+        $tag = new CompoundTag();
+        if ($data->custom_name !== null) {
+            $tag->setString("CustomName", $data->custom_name);
+        }
 
-		$this->sendTile($player, $block, $tag);
+        $this->sendTile($player, $block, $tag);
 
-		$this->onFakeBlockDataSend($player);
-	}
+        $this->onFakeBlockDataSend($player);
+    }
 
-	protected function sendRealBlockData(Player $player, HolderData $data) : void{
-		$player->getLevel()->sendBlocks([$player], [$data->position]);
-	}
+    protected function sendRealBlockData(Player $player, HolderData $data) : void
+    {
+        $player->getLevel()->sendBlocks([$player], [$data->position]);
+    }
 
-	abstract public function getBlock() : Block;
+    abstract public function getBlock() : Block;
+
 }
