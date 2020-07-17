@@ -1,2 +1,2 @@
 # BedWars
-A Bedwars Plugin for Pocketmine
+A BedWars Plugin for Pocketmine
