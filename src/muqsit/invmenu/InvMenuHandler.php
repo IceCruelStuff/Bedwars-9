@@ -26,51 +26,58 @@ use pocketmine\event\Listener;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\plugin\Plugin;
 
-class InvMenuHandler implements Listener{
+class InvMenuHandler implements Listener {
 
-	/** @var Plugin|null */
-	private static $registrant;
+    /** @var Plugin|null */
+    private static $registrant;
 
-	public static function isRegistered() : bool{
-		return self::$registrant instanceof Plugin;
-	}
+    public static function isRegistered() : bool
+    {
+        return self::$registrant instanceof Plugin;
+    }
 
-	public static function getRegistrant() : Plugin{
-		return self::$registrant;
-	}
+    public static function getRegistrant() : Plugin
+    {
+        return self::$registrant;
+    }
 
-	public static function register(Plugin $plugin) : void{
-		if(self::isRegistered()){
-			throw new \Error($plugin->getName() . "attempted to register " . self::class . " twice.");
-		}
+    public static function register(Plugin $plugin) : void
+    {
+        if (self::isRegistered()) {
+            throw new \Error($plugin->getName() . "attempted to register " . self::class . " twice.");
+        }
 
-		self::$registrant = $plugin;
-		$plugin->getServer()->getPluginManager()->registerEvents(new InvMenuHandler(), $plugin);
-	}
+        self::$registrant = $plugin;
+        $plugin->getServer()->getPluginManager()->registerEvents(new InvMenuHandler(), $plugin);
+    }
 
-	private function __construct(){
-	}
+    private function __construct()
+    {
 
-	/**
-	 * @param InventoryTransactionEvent $event
-	 * @priority NORMAL
-	 * @ignoreCancelled true
-	 */
-	public function onInventoryTransaction(InventoryTransactionEvent $event) : void{
-		$transaction = $event->getTransaction();
-		foreach($transaction->getActions() as $action){
-			if($action instanceof SlotChangeAction){
-				$inventory = $action->getInventory();
-				if($inventory instanceof BaseFakeInventory){
-					$menu = $inventory->getMenu();
-					$listener = $menu->getListener();
+    }
 
-					if(($listener !== null && !$listener($transaction->getSource(), $action->getSourceItem(), $action->getTargetItem(), $action)) || $menu->isReadonly()){
-						$event->setCancelled();
-						return;
-					}
-				}
-			}
-		}
-	}
+    /**
+     * @param InventoryTransactionEvent $event
+     * @priority NORMAL
+     * @ignoreCancelled true
+     */
+    public function onInventoryTransaction(InventoryTransactionEvent $event) : void
+    {
+        $transaction = $event->getTransaction();
+        foreach ($transaction->getActions() as $action) {
+            if ($action instanceof SlotChangeAction) {
+                $inventory = $action->getInventory();
+                if ($inventory instanceof BaseFakeInventory) {
+                    $menu = $inventory->getMenu();
+                    $listener = $menu->getListener();
+
+                    if (($listener !== null && !$listener($transaction->getSource(), $action->getSourceItem(), $action->getTargetItem(), $action)) || $menu->isReadonly()) {
+                        $event->setCancelled();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
 }
