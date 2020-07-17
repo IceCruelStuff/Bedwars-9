@@ -30,4 +30,5 @@ interface MenuIds{
 	const TYPE_CHEST = ChestInventory::class;
 	const TYPE_DOUBLE_CHEST = DoubleChestInventory::class;
 	const TYPE_HOPPER = HopperInventory::class;
+
 }
