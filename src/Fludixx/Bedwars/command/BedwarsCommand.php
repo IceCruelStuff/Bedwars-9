@@ -18,7 +18,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class bedwarsCommand extends Command
+class BedwarsCommand extends Command
 {
 
     public $bedwars;
