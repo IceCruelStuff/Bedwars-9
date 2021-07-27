@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace Fludixx\Bedwars;
 
-use Fludixx\Bedwars\command\bedwarsCommand;
+use Fludixx\Bedwars\command\BedwarsCommand;
 use Fludixx\Bedwars\command\BuildCommand;
-use Fludixx\Bedwars\command\leaveCommand;
+use Fludixx\Bedwars\command\LeaveCommand;
 use Fludixx\Bedwars\command\SignCommand;
 use Fludixx\Bedwars\command\StartCommand;
-use Fludixx\Bedwars\command\viewStatsCommand;
+use Fludixx\Bedwars\command\ViewStatsCommand;
 use Fludixx\Bedwars\event\BlockEventListener;
 use Fludixx\Bedwars\event\ChatListener;
 use Fludixx\Bedwars\event\EntityDamageListener;
@@ -32,6 +32,7 @@ use muqsit\invmenu\InvMenuHandler;
 use pocketmine\block\Block;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\permission\Permission;
 use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -78,8 +79,8 @@ class Bedwars extends PluginBase
     {
         self::$instance = $this;
         @mkdir($this->getDataFolder());
-        if(!file_exists($this->getDataFolder()."/mysql.yml")) {
-            $mysql = new Config($this->getDataFolder()."/mysql.yml", Config::YAML);
+        if (!file_exists($this->getDataFolder() . "/mysql.yml")) {
+            $mysql = new Config($this->getDataFolder() . "/mysql.yml", Config::YAML);
             $mysql->setAll([
                 'host' => '127.0.0.1',
                 'user' => 'admin',
@@ -98,17 +99,20 @@ class Bedwars extends PluginBase
             default:
                 self::$statsSystem = new JsonStats();
         }
-        if(!$this->getServer()->loadLevel("transfare"))
+        if (!$this->getServer()->loadLevel("transfare")) {
             $this->getServer()->generateLevel("transfare");
+        }
         self::$provider = new JsonProvider();
+        $this->registerPermissions();
         $this->registerCommands();
         $this->registerEvents();
         $this->loadArenas();
         $this->getScheduler()->scheduleRepeatingTask(new BWTask(), 20);
         $this->getScheduler()->scheduleRepeatingTask(new SignTask(), 20);
         $this->getLogger()->info(self::PREFIX."Bedwars geladen");
-        if (!InvMenuHandler::isRegistered())
+        if (!InvMenuHandler::isRegistered()) {
             InvMenuHandler::register(Bedwars::getInstance());
+        }
     }
 
     private function registerEvents()
@@ -121,14 +125,20 @@ class Bedwars extends PluginBase
         $pm->registerEvents(new ChatListener(), $this);
     }
 
+    private function registerPermissions()
+    {
+        $this->getServer()->getPluginManager()->addPermission(new Permission("bw.admin", "Allows the Owner of the Permission to manage Bedwars Arenas", Permission::DEFAULT_OP));
+        $this->getServer()->getPluginManager()->addPermission(new Permission("bw.build", "Allows the Owner of the Permission to use /bwbuild", Permission::DEFAULT_OP));
+    }
+
     private function registerCommands()
     {
         $map = $this->getServer()->getCommandMap();
-        $map->register("bw", new bedwarsCommand());
-        $map->register("leave", new leaveCommand());
+        $map->register("bw", new BedwarsCommand());
+        $map->register("leave", new LeaveCommand());
         $map->register("sign", new SignCommand());
         $map->register("start", new StartCommand());
-        $map->register("stats", new viewStatsCommand());
+        $map->register("stats", new ViewStatsCommand());
         $map->register("bwbuild", new BuildCommand());
     }
 
@@ -137,7 +147,7 @@ class Bedwars extends PluginBase
         foreach (self::$provider->getArenas() as $name => $data) {
             $this->getServer()->loadLevel($data['mapname']);
             $level = $this->getServer()->getLevelByName($data['mapname']);
-            self::$arenas[$name] = new Arena($data['mapname'], (int)$data['ppt'], (int)$data['teams'], $level, $data['spawns']);
+            self::$arenas[$name] = new Arena($data['mapname'], (int) $data['ppt'], (int) $data['teams'], $level, $data['spawns']);
         }
     }
 
