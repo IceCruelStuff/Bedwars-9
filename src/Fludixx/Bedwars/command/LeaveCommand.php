@@ -16,7 +16,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class leaveCommand extends Command
+class LeaveCommand extends Command
 {
 
     public function __construct()
