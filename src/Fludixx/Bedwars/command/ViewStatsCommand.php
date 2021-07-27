@@ -15,7 +15,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 
-class viewStatsCommand extends Command
+class ViewStatsCommand extends Command
 {
 
     public function __construct()
