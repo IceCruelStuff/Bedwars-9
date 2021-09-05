@@ -1,5 +1,5 @@
 # BedWars
-[![Poggit](https://poggit.pmmp.io/ci.shield/IceCruelStuff/Bedwars/~)](https://poggit.pmmp.io/ci/IceCruelStuff/Bedwars/~)
+[![Poggit](https://poggit.pmmp.io/ci.shield/IceCruelStuff/Bedwars-9/~)](https://poggit.pmmp.io/ci/IceCruelStuff/Bedwars-9)
 
 A BedWars Plugin for Pocketmine.
 
